@@ -1,0 +1,57 @@
+:root {
+	--hue-neutral: 200;
+	--hue-wrong: 0;
+	--hue-correct: 145;
+}
+
+html body {
+	--hue: var(--hue-neutral);
+	background-color: hsl(var(--hue), 100%, 20%);
+	height: 100vh;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+}
+
+.btn.correct {
+	--hue: var(--hue-correct);
+}
+
+.btn.wrong {
+	--hue: var(--hue-wrong);
+}
+
+.btn {
+	--hue: var(--hue-neutral);
+	background-color: hsl(var(--hue), 100%, 50%);
+	color: white;
+	outline: none;
+}
+
+.btn:hover {
+	border-color: black;
+}
+
+.btn:active {
+	background-color: hsl(var(--hue), 100%, 70%);
+	box-shadow: 0 1px #666;
+	transform: translateY(4px);
+}
+
+.btn.correct {
+	color: black;
+}
+
+.hide {
+	display: none !important;
+}
+
+#quiz-box {
+	background-color: white;
+	box-shadow: 0 0 10px 2px;
+}
+
+#__next {
+	width: 800px;
+	max-width: 80%;
+}
