@@ -8,31 +8,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Cache .pnpm-store
-      uses: actions/cache@v2
-      with:
-        path: ~/.pnpm-store
-        key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-    - name: Install pnpm
-      run: curl -f https://get.pnpm.io/v6.js | node - add --global pnpm@6
-    - name: pnpm Build
-      run: pnpm install
+        cache: 'npm'
+    - name: npm Build
+      run: npm ci
     - name: Cache Next.js Build
       uses: actions/cache@v2
       with:
         path: ${{ github.workspace }}/.next/cache
         key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
     - name: Next.js Build App
-      run: pnpm run build
+      run: npm run build
     - name: Next.js Export App to Static HTML
-      run: pnpm run export
+      run: npm run export
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.3
       with:
