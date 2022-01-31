@@ -73,7 +73,7 @@ export default class Quiz {
 		);
 	}
 
-	public async submitUserChoice(choice: string) {
+	public async submitChoice(choice: string) {
 		const response = await submitQuizResponse(this.user.getUuid(), choice);
 		this.incrementRoundNumber();
 

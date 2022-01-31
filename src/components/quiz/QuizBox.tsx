@@ -117,10 +117,12 @@ export default function QuizBox() {
 			| React.FormEvent<HTMLFormElement>
 	) {
 		event.preventDefault();
-		// selectAnswer(formInput);
+		if (formInput) {
+			// selectAnswer(formInput);
+		}
 	}
 	// async function selectAnswer(choice: string) {
-	// 	const response = await quiz.submitUserChoice(user, choice);
+	// 	const response = await quiz.submitChoice(choice);
 	// 	if (response.answer === true) {
 	// 		const dataAnswersArray = quiz.getAnswers().map((question) => {
 	// 			if (question.answer === choice || questionsData.length === 1) {

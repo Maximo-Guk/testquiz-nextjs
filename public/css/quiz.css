@@ -51,6 +51,10 @@ html body {
 	box-shadow: 0 0 10px 2px;
 }
 
+#question::selection {
+	background: black;
+}
+
 #__next {
 	width: 800px;
 	max-width: 80%;
