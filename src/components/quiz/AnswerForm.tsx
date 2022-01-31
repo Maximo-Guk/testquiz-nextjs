@@ -1,7 +1,22 @@
-export default function AnswerForm(props: any) {
+import React, { useContext } from 'react';
+import { QuizContext } from '../../context/AppContext';
+
+interface propsTypes {
+	value: string;
+	setFormInput: React.Dispatch<React.SetStateAction<string>>;
+	handleSubmit: (
+		event:
+			| React.MouseEvent<HTMLButtonElement, MouseEvent>
+			| React.FormEvent<HTMLFormElement>
+	) => void;
+}
+
+export default function AnswerForm(props: propsTypes) {
+	const { quiz } = useContext(QuizContext);
+
 	return (
 		<div id="answer-form" className="row text-center">
-			{props.questionsData ? (
+			{quiz.getAnswers() ? (
 				<div className="col">
 					<form onSubmit={(event) => props.handleSubmit(event)}>
 						<div className="row form-group">
@@ -14,15 +29,13 @@ export default function AnswerForm(props: any) {
 								className="form-control rounded"
 								placeholder="Answer"
 								value={props.value}
-								onChange={(event) =>
-									props.setFormInput(event.target.value)
-								}
+								onChange={(event) => props.setFormInput(event.target.value)}
 							></input>
 						</div>
 						<div className="row form-group">
 							<button
 								type="submit"
-								className={`btn border border-dark rounded btn-primary w-100 ${props.questionsData[0].status}`}
+								className={`btn border border-dark rounded btn-primary w-100`}
 								onClick={(event) => props.handleSubmit(event)}
 							>
 								Submit
