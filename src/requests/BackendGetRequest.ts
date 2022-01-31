@@ -4,7 +4,7 @@ import type User from '../types/User';
 // Fetch GET Implementation
 async function getData(endpoint: string) {
 	// API Endpoint
-	const url = 'https://maximoguk.com/api/quiz' + endpoint;
+	const url = 'https://maximoguk.com/api/quiz/v2' + endpoint;
 	const response = await fetch(url, {
 		method: 'GET',
 		mode: 'cors',

@@ -4,7 +4,7 @@ import type quizAnswer from '../types/quizAnswer';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function postData(endpoint: string, data: any) {
 	// API Endpoint
-	const url = 'https://maximoguk.com/api/quiz' + endpoint;
+	const url = 'https://maximoguk.com/api/quiz/v2' + endpoint;
 	const response = await fetch(url, {
 		method: 'POST',
 		mode: 'cors',
