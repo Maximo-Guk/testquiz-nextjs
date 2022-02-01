@@ -23,7 +23,7 @@ export default function Quiz() {
 				<link rel="stylesheet" href="css/quiz.css" />
 				<link rel="stylesheet" href="css/snake.css" />
 				<link rel="preload" as="image" href="images/confetti.gif" />
-				<audio controls preload="auto">
+				<audio preload="auto">
 					<source src="audio/victory.mp3" type="audio/mpeg" />
 					<source src="audio/snake-music.ogg" type="audio/ogg" />
 				</audio>
