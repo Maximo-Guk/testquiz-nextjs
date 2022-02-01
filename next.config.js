@@ -1,4 +1,4 @@
 module.exports = {
-    assetPrefix: "./",
-    reactStrictMode: true,
-}
+	assetPrefix: './',
+	reactStrictMode: true,
+};

@@ -1,8 +1,17 @@
-import { useState, useContext } from "react";
-import { AppContext } from "../../context/AppContext";
+import { useContext } from 'react';
+import { QuizContext } from '../../context/AppContext';
+import Quiz from '../../classes/Quiz';
 
-export default function QuizControls(props: any) {
-	const { state, dispatch } = useContext(AppContext);
+interface propsTypes {
+	handleNextButton: (quiz: Quiz) => Promise<void>;
+	handleStartButton: () => Promise<void>;
+	startButtonState: boolean;
+	nextButtonState: boolean;
+}
+
+export default function QuizControls(props: propsTypes) {
+	const { quiz } = useContext(QuizContext);
+
 	return (
 		<div id="quiz-controls" className="row text-center">
 			{props.startButtonState ? (
@@ -19,7 +28,7 @@ export default function QuizControls(props: any) {
 				<div className="col">
 					<button
 						id="next-button"
-						onClick={() => props.handleNextButton(state.uuid)}
+						onClick={() => props.handleNextButton(quiz)}
 						className="font-weight-bold btn border border-dark rounded mx-auto py-2 px-4"
 					>
 						Next

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import NewGame from "./NewGame";
-import SettingMenu from "./SettingMenu";
 
 export default function SnakeGame(props: any) {
 	// Background Color state
