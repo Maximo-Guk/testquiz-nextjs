@@ -127,7 +127,7 @@ export default function QuizBox() {
 		}
 	}
 	function handleClick(index: number) {
-		const answerChoice = quiz.getAnswers()[index];
+		const answerChoice = answers[index];
 		if (!answerChoice.status) {
 			selectAnswer(answerChoice.answer);
 		}
