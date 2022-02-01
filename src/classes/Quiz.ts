@@ -8,7 +8,7 @@ export interface Answer {
 }
 
 export default class Quiz {
-	private user: User;
+	private readonly user: User;
 	private roundNumber: number;
 	private question: string;
 	private type: string;

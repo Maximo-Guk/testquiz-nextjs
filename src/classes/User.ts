@@ -1,7 +1,7 @@
 import { getNewUser } from '../requests/BackendGetRequest';
 
 export default class User {
-	private uuid: string;
+	private readonly uuid: string;
 
 	private constructor(uuid: string) {
 		this.uuid = uuid;
