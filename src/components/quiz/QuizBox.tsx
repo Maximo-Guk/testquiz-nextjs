@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import Quiz from '../../classes/Quiz';
+import Quiz, { Answer } from '../../classes/Quiz';
 import { QuizContext } from '../../context/AppContext';
 import AnswerButtons from './AnswerButtons';
 import AnswerForm from './AnswerForm';
@@ -46,6 +46,7 @@ export default function QuizBox() {
 
 	// Button Quiz
 	const [buttonState, setButtonState] = useState(false);
+	const [answers, setAnswers] = useState([] as Answer[]);
 
 	// Form Quiz
 	const [formState, setFormState] = useState(false);
@@ -76,6 +77,7 @@ export default function QuizBox() {
 				await quiz.getQuizQuestion();
 			}
 			setQuestion(quiz.getQuestion());
+			setAnswers(quiz.getAnswers());
 			setNextButtonState(false);
 			if (quiz.getType() !== undefined) {
 				let questionType = quiz.getType();
@@ -108,8 +110,8 @@ export default function QuizBox() {
 		}
 	}
 	function handleClick(index: number) {
-		const questionChoice = quiz.getAnswers()[index];
-		// selectAnswer(questionChoice);
+		const questionChoice = quiz.getAnswers()[index].answer;
+		selectAnswer(questionChoice);
 	}
 	function handleSubmit(
 		event:
@@ -118,7 +120,7 @@ export default function QuizBox() {
 	) {
 		event.preventDefault();
 		if (formInput) {
-			// selectAnswer(formInput);
+			selectAnswer(formInput);
 		}
 	}
 	// async function selectAnswer(choice: string) {
@@ -156,10 +158,11 @@ export default function QuizBox() {
 						<div className="w-100"></div>
 						<div className="col mb-4">
 							{buttonState ? (
-								<AnswerButtons handleClick={handleClick} />
+								<AnswerButtons handleClick={handleClick} answers={answers} />
 							) : formState ? (
 								<AnswerForm
 									value={formInput}
+									answers={answers}
 									setFormInput={setFormInput}
 									handleSubmit={handleSubmit}
 								/>

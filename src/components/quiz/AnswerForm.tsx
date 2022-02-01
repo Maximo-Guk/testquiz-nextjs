@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
-import { QuizContext } from '../../context/AppContext';
+import React from 'react';
+import type { Answer } from '../../classes/Quiz';
 
 interface propsTypes {
 	value: string;
+	answers: Answer[];
 	setFormInput: React.Dispatch<React.SetStateAction<string>>;
 	handleSubmit: (
 		event:
@@ -12,11 +13,9 @@ interface propsTypes {
 }
 
 export default function AnswerForm(props: propsTypes) {
-	const { quiz } = useContext(QuizContext);
-
 	return (
 		<div id="answer-form" className="row text-center">
-			{quiz.getAnswers() ? (
+			{props.answers ? (
 				<div className="col">
 					<form onSubmit={(event) => props.handleSubmit(event)}>
 						<div className="row form-group">
@@ -35,7 +34,7 @@ export default function AnswerForm(props: propsTypes) {
 						<div className="row form-group">
 							<button
 								type="submit"
-								className={`btn border border-dark rounded btn-primary w-100`}
+								className={`btn border border-dark rounded btn-primary w-100 ${props.answers[0].status}`}
 								onClick={(event) => props.handleSubmit(event)}
 							>
 								Submit

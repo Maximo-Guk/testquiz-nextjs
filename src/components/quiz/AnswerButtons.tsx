@@ -1,24 +1,21 @@
-import { useContext } from 'react';
-import { QuizContext } from '../../context/AppContext';
+import type { Answer } from '../../classes/Quiz';
 
 interface propsTypes {
 	handleClick: (index: number) => void;
+	answers: Answer[];
 }
 
 export default function AnswerButtons(props: propsTypes) {
-	const { quiz } = useContext(QuizContext);
-
 	return (
 		<div id="answer-buttons" className="row text-center">
-			{quiz.getAnswers()
-				? quiz.getAnswers().map((answer, index: number) => (
+			{props.answers
+				? props.answers.map((answer, index) => (
 						<div className="col" key={index}>
 							<button
-								id={`question${index}`}
-								className={`btn border border-dark rounded mx-auto w-100`}
+								className={`btn border border-dark rounded mx-auto w-100 ${answer.status}`}
 								onClick={() => props.handleClick(index)}
 							>
-								{answer}
+								{answer.answer}
 							</button>
 						</div>
 				  ))

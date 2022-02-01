@@ -2,12 +2,17 @@ import { getQuizQuestion } from '../requests/BackendGetRequest';
 import { submitQuizResponse } from '../requests/BackendPostRequest';
 import User from './User';
 
+export interface Answer {
+	answer: string;
+	status?: string;
+}
+
 export default class Quiz {
 	private user: User;
 	private roundNumber: number;
 	private question: string;
 	private type: string;
-	private answers: string[];
+	private answers: Answer[];
 	private gameWin: boolean;
 
 	private constructor(
@@ -15,7 +20,7 @@ export default class Quiz {
 		roundNumber: number,
 		question: string,
 		type: string,
-		answers: string[],
+		answers: Answer[],
 		gameWin: boolean
 	) {
 		this.user = user;
@@ -50,7 +55,7 @@ export default class Quiz {
 	private setType(type: string) {
 		this.type = type;
 	}
-	private setAnswers(answers: string[]) {
+	private setAnswers(answers: Answer[]) {
 		this.answers = answers;
 	}
 	private setGameWin(gameWin: boolean) {
@@ -62,15 +67,22 @@ export default class Quiz {
 		const response = await getQuizQuestion(user.getUuid());
 		const roundNumber = 0;
 		const gameWin = false;
+		const answers = Quiz.toAnswers(response.answers);
 
 		return new Quiz(
 			user,
 			roundNumber,
 			response.question,
 			response.type,
-			response.answers,
+			answers,
 			gameWin
 		);
+	}
+
+	private static toAnswers(answers: string[]) {
+		return answers.map((answer) => {
+			return { answer: answer } as Answer;
+		});
 	}
 
 	public async submitChoice(choice: string) {
@@ -88,8 +100,10 @@ export default class Quiz {
 			return;
 		}
 
+		const answers = Quiz.toAnswers(response.answers);
+
 		this.setQuestion(response.question);
 		this.setType(response.type);
-		this.setAnswers(response.answers);
+		this.setAnswers(answers);
 	}
 }
