@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-function SnakeGame() {
+export default function SnakeGame() {
 	// Background Color state
-	const [backgroundColor, setBackgroundColor] = useState("black");
+	const [backgroundColor, setBackgroundColor] = useState('black');
 
 	// Render Background color on background state change
 	useEffect(() => {
@@ -13,7 +13,7 @@ function SnakeGame() {
 	const [music, setMusic] = useState<any>(null);
 
 	useEffect(() => {
-		setMusic(new Audio("audio/snake-music.ogg"));
+		setMusic(new Audio('audio/snake-music.ogg'));
 	}, []);
 
 	useEffect(() => {
@@ -21,14 +21,12 @@ function SnakeGame() {
 	}, [music]);
 
 	// Game States
-	
-	
 
 	// TODO: Game Logic
 
 	// TODO: Make this into a function that handles click for the speed setting.
 	for (var i = 0; i < speed_setting.length; i++) {
-		speed_setting[i].addEventListener("click", function () {
+		speed_setting[i].addEventListener('click', function () {
 			for (var i = 0; i < speed_setting.length; i++) {
 				if (speed_setting[i].checked) {
 					setSnakeSpeed(speed_setting[i].value);
@@ -39,7 +37,7 @@ function SnakeGame() {
 
 	// TODO: Make this into a function that handles click for the speed setting.
 	for (var i = 0; i < wall_setting.length; i++) {
-		wall_setting[i].addEventListener("click", function () {
+		wall_setting[i].addEventListener('click', function () {
 			for (var i = 0; i < wall_setting.length; i++) {
 				if (wall_setting[i].checked) {
 					setWall(wall_setting[i].value);
@@ -50,9 +48,9 @@ function SnakeGame() {
 
 	//TODO: Handle space keydown, and trigger newgame. Use state when checking the visibility.
 	document.onkeydown = function (evt) {
-		if (screen_gameover.style.display == "block") {
+		if (screen_gameover.style.display == 'block') {
 			evt = evt || window.event;
-			if (evt.code === "Space") {
+			if (evt.code === 'Space') {
 				newGame();
 			}
 		}
@@ -60,7 +58,7 @@ function SnakeGame() {
 
 	//TODO: Figure out what this does. I think it makes a border?
 	function activeDot(x, y) {
-		ctx.fillStyle = "#FFFFFF";
+		ctx.fillStyle = '#FFFFFF';
 		ctx.fillRect(x * 10, y * 10, 10, 10);
 	}
 
@@ -68,22 +66,22 @@ function SnakeGame() {
 	that should be handled with states
 	*/
 	function changeDir(key) {
-		console.log("I pressed " + key);
+		console.log('I pressed ' + key);
 
-		if (key === "ArrowUp" && snake_dir != 2) {
-			console.log("Right");
+		if (key === 'ArrowUp' && snake_dir != 2) {
+			console.log('Right');
 			snake_next_dir = 0;
 		} else {
-			if (key === "ArrowRight" && snake_dir != 3) {
-				console.log("Left");
+			if (key === 'ArrowRight' && snake_dir != 3) {
+				console.log('Left');
 				snake_next_dir = 1;
 			} else {
-				if (key === "ArrowDown" && snake_dir != 0) {
-					console.log("Up");
+				if (key === 'ArrowDown' && snake_dir != 0) {
+					console.log('Up');
 					snake_next_dir = 2;
 				} else {
-					if (key === "ArrowLeft" && snake_dir != 1) {
-						console.log("Down");
+					if (key === 'ArrowLeft' && snake_dir != 1) {
+						console.log('Down');
 						snake_next_dir = 3;
 					}
 				}
@@ -167,7 +165,7 @@ function SnakeGame() {
 				}
 			}
 		}
-		
+
 		// Autophagy death
 		for (var i = 1; i < snake.length; i++) {
 			if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
@@ -184,13 +182,13 @@ function SnakeGame() {
 			addFood();
 			activeDot(food.x, food.y);
 			if (score == 10) {
-				var x = document.getElementById("NextPage");
-				x.style.display = "block";
+				var x = document.getElementById('NextPage');
+				x.style.display = 'block';
 			}
 		}
 
 		ctx.beginPath();
-		ctx.fillStyle = "#000000";
+		ctx.fillStyle = '#000000';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 		for (var i = 0; i < snake.length; i++) {
@@ -239,10 +237,10 @@ function SnakeGame() {
 	function setWall(wall_value) {
 		wall = wall_value;
 		if (wall == 0) {
-			screen_snake.style.borderColor = "#606060";
+			screen_snake.style.borderColor = '#606060';
 		}
 		if (wall == 1) {
-			screen_snake.style.borderColor = "#FFFFFF";
+			screen_snake.style.borderColor = '#FFFFFF';
 		}
 	}
 
@@ -256,31 +254,31 @@ function SnakeGame() {
 	function showScreen(screen_opt) {
 		switch (screen_opt) {
 			case 0:
-				screen_snake.style.display = "block";
-				screen_menu.style.display = "none";
-				screen_setting.style.display = "none";
-				screen_gameover.style.display = "none";
+				screen_snake.style.display = 'block';
+				screen_menu.style.display = 'none';
+				screen_setting.style.display = 'none';
+				screen_gameover.style.display = 'none';
 				break;
 
 			case 1:
-				screen_snake.style.display = "none";
-				screen_menu.style.display = "block";
-				screen_setting.style.display = "none";
-				screen_gameover.style.display = "none";
+				screen_snake.style.display = 'none';
+				screen_menu.style.display = 'block';
+				screen_setting.style.display = 'none';
+				screen_gameover.style.display = 'none';
 				break;
 
 			case 2:
-				screen_snake.style.display = "none";
-				screen_menu.style.display = "none";
-				screen_setting.style.display = "block";
-				screen_gameover.style.display = "none";
+				screen_snake.style.display = 'none';
+				screen_menu.style.display = 'none';
+				screen_setting.style.display = 'block';
+				screen_gameover.style.display = 'none';
 				break;
 
 			case 3:
-				screen_snake.style.display = "none";
-				screen_menu.style.display = "none";
-				screen_setting.style.display = "none";
-				screen_gameover.style.display = "block";
+				screen_snake.style.display = 'none';
+				screen_menu.style.display = 'none';
+				screen_setting.style.display = 'none';
+				screen_gameover.style.display = 'block';
 				break;
 		}
 	}
@@ -307,10 +305,10 @@ function SnakeGame() {
 			<div id="gameover" className="text-white text-center mx-auto">
 				<h2>Game Over</h2>
 				<p>
-					press{" "}
+					press{' '}
 					<span id="pressSpaceKey" className="bg-white text-dark">
 						space
-					</span>{" "}
+					</span>{' '}
 					to begin a
 				</p>
 				<NewGame handleClick={newGame}></NewGame>
