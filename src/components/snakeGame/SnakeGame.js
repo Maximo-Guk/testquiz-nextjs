@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function SnakeGame(props: any) {
+function SnakeGame() {
 	// Background Color state
 	const [backgroundColor, setBackgroundColor] = useState("black");
 
