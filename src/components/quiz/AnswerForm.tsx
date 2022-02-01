@@ -19,12 +19,8 @@ export default function AnswerForm(props: propsTypes) {
 				<div className="col">
 					<form onSubmit={(event) => props.handleSubmit(event)}>
 						<div className="row form-group">
-							<label className="sr-only" htmlFor="inlineFormInputName2">
-								Name
-							</label>
 							<input
 								type="text"
-								id="inlineFormInputName2"
 								className="form-control rounded"
 								placeholder="Answer"
 								value={props.value}

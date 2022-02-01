@@ -56,7 +56,7 @@ export default function QuizBox() {
 	const [startButtonState, setStartButtonState] = useState(true);
 	const [nextButtonState, setNextButtonState] = useState(false);
 
-	async function startGame() {
+	async function startQuiz() {
 		try {
 			const newQuiz = await Quiz.newQuiz();
 			setQuiz(newQuiz);
@@ -71,10 +71,27 @@ export default function QuizBox() {
 			throw error;
 		}
 	}
+
+	function resetQuiz() {
+		setButtonState(false);
+		setFormState(false);
+		setFormInput('');
+		setQuestionBoxState(false);
+		setBackgroundColor(neutralColor);
+		setBackgroundImage('');
+	}
+
+	function restartQuiz() {
+		resetQuiz();
+		setNextButtonState(false);
+		setStartButtonState(true);
+	}
+
 	async function nextQuestion(quiz: Quiz) {
 		try {
 			if (quiz.getRoundNumber() !== 0) {
 				await quiz.getQuizQuestion();
+				resetQuiz();
 			}
 			setQuestion(quiz.getQuestion());
 			setAnswers(quiz.getAnswers());
@@ -103,15 +120,17 @@ export default function QuizBox() {
 		} catch (error) {
 			if (error instanceof TypeError && error.message === 'Failed to fetch') {
 				console.log(error);
-				setStartButtonState(true);
 				return;
 			}
+			restartQuiz();
 			throw error;
 		}
 	}
 	function handleClick(index: number) {
-		const questionChoice = quiz.getAnswers()[index].answer;
-		selectAnswer(questionChoice);
+		const answerChoice = quiz.getAnswers()[index];
+		if (!answerChoice.status) {
+			selectAnswer(answerChoice.answer);
+		}
 	}
 	function handleSubmit(
 		event:
@@ -119,34 +138,34 @@ export default function QuizBox() {
 			| React.FormEvent<HTMLFormElement>
 	) {
 		event.preventDefault();
-		if (formInput) {
+		if (!answers[0].status) {
 			selectAnswer(formInput);
 		}
 	}
-	// async function selectAnswer(choice: string) {
-	// 	const response = await quiz.submitChoice(choice);
-	// 	if (response.answer === true) {
-	// 		const dataAnswersArray = quiz.getAnswers().map((question) => {
-	// 			if (question.answer === choice || questionsData.length === 1) {
-	// 				return { ...question, status: 'correct' };
-	// 			} else {
-	// 				return { ...question, status: 'wrong' };
-	// 			}
-	// 		});
-	// 		setQuestionsData(dataAnswersArray);
-	// 		setBackgroundColor(successColor);
-	// 		setBackgroundImage(successImage);
-	// 		victorySound.play();
-	// 	} else {
-	// 		const dataAnswersArray = questionsData.map((question) => {
-	// 			return { ...question, status: 'wrong' };
-	// 		});
-	// 		quiz.setQuestion('You lost!');
-	// 		setQuestionsData(dataAnswersArray);
-	// 		setBackgroundColor(failureColor);
-	// 	}
-	// 	setNextButtonState(true);
-	// }
+	async function selectAnswer(choice: string) {
+		const response = await quiz.submitChoice(choice);
+		if (response.answer === true) {
+			const updatedAnswers = answers.map((question) => {
+				if (question.answer === choice || answers.length === 1) {
+					return { ...question, status: 'correct' };
+				} else {
+					return { ...question, status: 'wrong' };
+				}
+			});
+			setAnswers(updatedAnswers);
+			setBackgroundColor(successColor);
+			setBackgroundImage(successImage);
+			victorySound.play();
+		} else {
+			const updatedAnswers = answers.map((question) => {
+				return { ...question, status: 'wrong' };
+			});
+			setQuestion('You lost!');
+			setAnswers(updatedAnswers);
+			setBackgroundColor(failureColor);
+		}
+		setNextButtonState(true);
+	}
 	return (
 		<div id="quiz-box" className="rounded mx-auto p-2">
 			<div className="container-fluid">
@@ -173,7 +192,7 @@ export default function QuizBox() {
 
 				<QuizControls
 					handleNextButton={nextQuestion}
-					handleStartButton={startGame}
+					handleStartButton={startQuiz}
 					startButtonState={startButtonState}
 					nextButtonState={nextButtonState}
 				/>
