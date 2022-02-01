@@ -14,7 +14,7 @@ export default function QuizBox() {
 	const successColor = 'hsl(145, 100%, 20%)';
 	const failureColor = 'hsl(0, 100%, 20%)';
 	// Background success image
-	const successImage = "url('images/Confetti.gif')";
+	const successImage = "url('images/confetti.gif')";
 
 	// Background Color state
 	const [backgroundColor, setBackgroundColor] = useState(neutralColor);
