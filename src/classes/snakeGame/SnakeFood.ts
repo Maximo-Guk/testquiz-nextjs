@@ -1,15 +1,21 @@
-export default class SnakeFood {
-	private position: [number, number];
+import Point from '../../types/Point';
 
-	private constructor(position: [number, number]) {
+export default class SnakeFood {
+	private position: Point;
+
+	private constructor(position: Point) {
 		this.position = position;
 	}
 
-	public static newSnakeFood(canvasDimensions: [number, number]) {
-		const xPos = Math.floor(Math.random() * (canvasDimensions[0] / 10 - 1));
-		const yPos = Math.floor(Math.random() * (canvasDimensions[1] / 10 - 1));
+	public getPosition() {
+		return this.position;
+	}
 
-		const position: [number, number] = [xPos, yPos];
+	public static newSnakeFood(canvasWidth: number, canvasHeight: number) {
+		const xPos = Math.floor(Math.random() * (canvasWidth / 10 - 1));
+		const yPos = Math.floor(Math.random() * (canvasHeight / 10 - 1));
+
+		const position = { xPos, yPos };
 
 		return new SnakeFood(position);
 	}

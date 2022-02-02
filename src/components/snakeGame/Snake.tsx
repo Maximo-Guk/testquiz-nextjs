@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import SnakeGame from '../../classes/snakeGame/SnakeGame';
+import Point from '../../types/Point';
 
 export default function Snake() {
 	// Background Color state
@@ -28,17 +29,104 @@ export default function Snake() {
 	const [gameOverState, setGameOverState] = useState(false);
 
 	// snakeGame States
-	const [snakeGame, setSnakeGame] = useState<SnakeGame>({} as SnakeGame);
 	const [score, setScore] = useState(0);
 
+	// When game state changes
+	useEffect(() => {
+		// Game is started
+		if (gameState) {
+			const canvas = document.getElementById('snake') as HTMLCanvasElement;
+			const ctx = canvas.getContext('2d');
+			if (ctx) {
+				const newSnakeGame = SnakeGame.newGame(
+					150,
+					false,
+					canvas.width,
+					canvas.height
+				);
+				mainLoop(newSnakeGame, ctx);
+			}
+		}
+	}, [gameState]);
+
 	function startGame() {
-		const newSnakeGame = SnakeGame.newGame(150, true, [0, 0]);
-		setSnakeGame(newSnakeGame);
 		setMainMenuState(false);
+		setGameOverState(false);
 		setGameState(true);
+		setScore(0);
 	}
 
-	function mainLoop() {}
+	function gameOver() {
+		setGameState(false);
+		setGameOverState(true);
+	}
+
+	function mainLoop(snakeGame: SnakeGame, ctx: CanvasRenderingContext2D) {
+		// 0 - Up, 1 - Right, 2 - Down, 3 - Left
+		switch (snakeGame.getSnakeDirection()) {
+			case 0:
+				snakeGame.snakeGoUp();
+				break;
+			case 1:
+				snakeGame.snakeGoRight();
+				break;
+			case 2:
+				snakeGame.snakeGoDown();
+				break;
+			case 3:
+				snakeGame.snakeGoLeft();
+				break;
+		}
+
+		// Wall
+		if (snakeGame.getWall()) {
+			// On
+			if (snakeGame.snakeIsTouchingWall()) {
+				gameOver();
+				return;
+			}
+		} else {
+			// Off
+			snakeGame.snakeMove();
+		}
+
+		// Autophagy death
+		if (snakeGame.snakeIsTouchingItSelf()) {
+			gameOver();
+			return;
+		}
+
+		// Eat Food
+		if (snakeGame.snakeIsTouchingFood()) {
+			setScore((prevScore) => prevScore++);
+			snakeGame.addFood();
+			activeDot(ctx, snakeGame.getFoodPosition());
+			if (score === 10) {
+				//TODO: Link this to quiz
+				const x = document.getElementById('NextPage');
+				if (x) {
+					x.style.display = 'block';
+				}
+			}
+		}
+
+		ctx.beginPath();
+		ctx.fillStyle = '#000000';
+		ctx.fillRect(0, 0, snakeGame.getWidth(), snakeGame.getHeight());
+
+		for (let i = 0; i < snakeGame.getSnakeLength(); i++) {
+			activeDot(ctx, snakeGame.getSnakePositionAtIndex(i));
+		}
+
+		activeDot(ctx, snakeGame.getFoodPosition());
+
+		setTimeout(mainLoop, snakeGame.getSnakeSpeed(), snakeGame, ctx);
+	}
+
+	function activeDot(ctx: CanvasRenderingContext2D, position: Point) {
+		ctx.fillStyle = '#FFFFFF';
+		ctx.fillRect(position.xPos * 10, position.yPos * 10, 10, 10);
+	}
 
 	return (
 		<div id="snakeGame">
@@ -113,11 +201,6 @@ export default function Snake() {
 		</div>
 	);
 }
-
-// var activeDot = function (x, y) {
-// 	ctx.fillStyle = '#FFFFFF';
-// 	ctx.fillRect(x * 10, y * 10, 10, 10);
-// };
 
 // var changeDir = function (key) {
 // 	if (key == 38 && snake_dir != 2) {
