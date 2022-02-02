@@ -1,4 +1,4 @@
-import type { Answer } from '../../classes/Quiz';
+import type { Answer } from '../../classes/quiz/Quiz';
 
 interface propsTypes {
 	handleClick: (index: number) => void;

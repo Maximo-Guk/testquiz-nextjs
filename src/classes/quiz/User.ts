@@ -1,4 +1,4 @@
-import { getNewUser } from '../requests/BackendGetRequest';
+import { getNewUser } from '../../requests/BackendGetRequest';
 
 export default class User {
 	private readonly uuid: string;

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import Quiz, { Answer } from '../../classes/Quiz';
+import Quiz, { Answer } from '../../classes/quiz/Quiz';
 import { QuizContext } from '../../context/AppContext';
 import AnswerButtons from './AnswerButtons';
 import AnswerForm from './AnswerForm';

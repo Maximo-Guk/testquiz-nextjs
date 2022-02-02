@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Answer } from '../../classes/Quiz';
+import type { Answer } from '../../classes/quiz/Quiz';
 
 interface propsTypes {
 	value: string;

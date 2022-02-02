@@ -1,5 +1,5 @@
-import { getQuizQuestion } from '../requests/BackendGetRequest';
-import { submitQuizResponse } from '../requests/BackendPostRequest';
+import { getQuizQuestion } from '../../requests/BackendGetRequest';
+import { submitQuizResponse } from '../../requests/BackendPostRequest';
 import User from './User';
 
 export interface Answer {

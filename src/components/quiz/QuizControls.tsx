@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { QuizContext } from '../../context/AppContext';
-import Quiz from '../../classes/Quiz';
+import Quiz from '../../classes/quiz/Quiz';
 
 interface propsTypes {
 	handleNextButton: (quiz: Quiz) => Promise<void>;
