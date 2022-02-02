@@ -82,12 +82,12 @@ export default class SnakeGame {
 		this.snake.goLeft();
 	}
 
-	public snakeIsTouchingWall() {
-		return this.snake.isTouchingWall(this.getWidth(), this.getHeight());
-	}
-
 	public snakeMove() {
 		return this.snake.move(this.getWidth(), this.getHeight());
+	}
+
+	public snakeIsTouchingWall() {
+		return this.snake.isTouchingWall(this.getWidth(), this.getHeight());
 	}
 
 	public snakeIsTouchingItSelf() {
