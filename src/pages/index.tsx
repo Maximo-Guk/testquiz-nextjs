@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import QuizBox from '../components/quiz/QuizBox';
+import Snake from '../components/snakeGame/Snake';
 import AppProvider from '../context/AppContext';
 export default function Quiz() {
 	return (
@@ -25,7 +26,7 @@ export default function Quiz() {
 				<link rel="preload" as="image" href="images/confetti.gif" />
 			</Head>
 			<AppProvider>
-				<QuizBox />
+				<Snake />
 			</AppProvider>
 		</>
 	);

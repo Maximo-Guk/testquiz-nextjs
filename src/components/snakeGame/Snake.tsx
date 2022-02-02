@@ -1,77 +1,116 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SnakeGame from '../../classes/snakeGame/SnakeGame';
 
 export default function Snake() {
+	// Background Color state
+	const [backgroundColor, setBackgroundColor] = useState('black');
+
+	// Render Background color on background state change
+	useEffect(() => {
+		document.body.style.backgroundColor = backgroundColor;
+	}, [backgroundColor]);
+
+	// Music
+	const [music, setMusic] = useState<any>(null);
+
+	useEffect(() => {
+		setMusic(new Audio('audio/snake-music.ogg'));
+	}, []);
+
+	useEffect(() => {
+		music !== null ? ((music.loop = true), (music.autoplay = true)) : null;
+	}, [music]);
+
+	// Game Menu States
+	const [gameState, setGameState] = useState(false);
+	const [mainMenuState, setMainMenuState] = useState(true);
+	const [settingState, setSettingState] = useState(false);
+	const [gameOverState, setGameOverState] = useState(false);
+
+	// snakeGame States
 	const [snakeGame, setSnakeGame] = useState<SnakeGame>({} as SnakeGame);
+	const [score, setScore] = useState(0);
 
 	function startGame() {
-		SnakeGame.newGame(150, true, [0, 0]);
+		const newSnakeGame = SnakeGame.newGame(150, true, [0, 0]);
+		setSnakeGame(newSnakeGame);
+		setMainMenuState(false);
+		setGameState(true);
 	}
 
+	function mainLoop() {}
+
 	return (
-		<>
-			<header className="wrap">
-				<h1>Snake</h1>
-				<p className="score">
-					Score: <span id="score_value">0</span>
+		<div id="snakeGame">
+			<header className="wrap mx-auto">
+				<h1 id="headerTitle" className="text-white">
+					Snake
+				</h1>
+				<p className="score text-white text-right">
+					Score: <span id="score_value">{score}</span>
 				</p>
 			</header>
-			<canvas
-				className="wrap"
-				id="snake"
-				width="320"
-				height="320"
-				tabIndex={1}
-			></canvas>
 
-			<div id="gameover">
-				<h2>Game Over</h2>
-				<p>
-					press
-					<span style={{ backgroundColor: '#FFFFFF', color: '#000000' }}>
-						space
-					</span>
-					to begin a
-				</p>
-				<a id="newgame_gameover">new game</a>
-				<a id="setting_gameover">settings</a>
-			</div>
+			{gameState ? (
+				<canvas
+					className="wrap mx-auto"
+					id="snake"
+					width="320"
+					height="320"
+					tabIndex={1}
+				></canvas>
+			) : null}
 
-			<div id="setting">
-				<h2>Settings</h2>
+			{gameOverState ? (
+				<div id="gameover" className="text-white text-center mx-auto">
+					<h2>Game Over</h2>
+					<p>
+						press{' '}
+						<span id="pressSpaceKey" className="bg-white text-dark">
+							space
+						</span>{' '}
+						to begin a
+					</p>
+					<a onClick={() => startGame()}>new game</a>
+					<a onClick={() => console.log('Show settings')}>settings</a>
+				</div>
+			) : null}
+			{/* Game Over Screen */}
 
-				<a id="newgame_setting">new game</a>
-				<br />
-				<p>
-					Speed:
-					<input id="speed3" type="radio" name="speed" value="35" />
-					<label htmlFor="speed3">Fast is the only option!</label>
-				</p>
-				<br />
-				<p>
-					Wall:
-					<input id="wallon" type="radio" name="wall" value="1" checked />
-					<label htmlFor="wallon">On</label>
-					<input id="walloff" type="radio" name="wall" value="0" />
-					<label htmlFor="walloff">Off</label>
-				</p>
-			</div>
+			{/* Setting screen */}
+			{settingState ? (
+				<div id="setting" className="text-white text-center mx-auto">
+					<h2>Settings</h2>
 
-			<div id="menu">
-				<h2>Snake</h2>
-				<p
-					style={{
-						fontFamily:
-							'Gill Sans, Gill Sans MT, Calibri, Trebuchet MS, sans-serif',
-					}}
-				>
-					(Score 10 points to win!)
-				</p>
-				<br />
-				<a id="newgame_menu">new game</a>
-				<a id="setting_menu">settings</a>
-			</div>
-		</>
+					<a onClick={() => startGame()}>new game</a>
+					<br />
+					<p>
+						Speed:
+						<input id="speed3" type="radio" name="speed" value="35" />
+						<label htmlFor="speed3">Fast is the only option!</label>
+					</p>
+					<br />
+					<p>
+						Wall:
+						<input id="wallon" type="radio" name="wall" value="1" />
+						<label htmlFor="wallon">On</label>
+						<input id="walloff" type="radio" name="wall" value="0" />{' '}
+						<label htmlFor="walloff">Off</label>
+					</p>
+				</div>
+			) : null}
+
+			{/* Main Menu Screen */}
+			{mainMenuState ? (
+				<div id="menu" className="text-white text-center mx-auto">
+					<h2>Snake</h2>
+					<p id="scoreInstructions">(Score 10 points to win!)</p>
+					<br />
+					<a onClick={() => startGame()}>new game</a>
+					<a onClick={() => console.log('Show settings')}>settings</a>
+				</div>
+			) : null}
+		</div>
 	);
 }
 
