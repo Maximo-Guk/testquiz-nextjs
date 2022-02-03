@@ -11,23 +11,17 @@ export default class SnakeGame {
 	private food: SnakeFood;
 	private readonly canvasDimensions: CanvasDimensions;
 	private readonly wall: boolean;
-	private score: number;
-	private gameOver: boolean;
 
 	private constructor(
 		snake: Snake,
 		food: SnakeFood,
 		wall: boolean,
-		canvasDimensions: CanvasDimensions,
-		score: number,
-		gameOver: boolean
+		canvasDimensions: CanvasDimensions
 	) {
 		this.snake = snake;
 		this.food = food;
 		this.wall = wall;
 		this.canvasDimensions = canvasDimensions;
-		this.score = score;
-		this.gameOver = gameOver;
 	}
 
 	public getSnakeSpeed() {
@@ -66,6 +60,10 @@ export default class SnakeGame {
 		this.food = food;
 	}
 
+	public setSnakeDirection(direction: number) {
+		this.snake.setDirection(direction);
+	}
+
 	public snakeGoUp() {
 		this.snake.goUp();
 	}
@@ -82,8 +80,8 @@ export default class SnakeGame {
 		this.snake.goLeft();
 	}
 
-	public snakeMove() {
-		return this.snake.move(this.getWidth(), this.getHeight());
+	public snakeCheckForCrossingBorder() {
+		return this.snake.checkForCrossingBorder(this.getWidth(), this.getHeight());
 	}
 
 	public snakeIsTouchingWall() {
@@ -127,9 +125,7 @@ export default class SnakeGame {
 			canvasDimensions.width,
 			canvasDimensions.height
 		);
-		const score = 0;
-		const gameOver = false;
 
-		return new SnakeGame(snake, food, wall, canvasDimensions, score, gameOver);
+		return new SnakeGame(snake, food, wall, canvasDimensions);
 	}
 }

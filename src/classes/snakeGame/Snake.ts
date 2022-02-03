@@ -43,8 +43,13 @@ export default class Snake {
 		return this.positions[0].yPos;
 	}
 
+	public setDirection(direction: number) {
+		this.direction = direction;
+	}
+
 	private setPosAtIndex(i: number, position: Point) {
-		this.positions[i] = position;
+		this.positions[i].xPos = position.xPos;
+		this.positions[i].yPos = position.yPos;
 	}
 
 	private setXPosAtIndex(i: number, xPos: number) {
@@ -63,29 +68,43 @@ export default class Snake {
 		this.positions[0].yPos = yPos;
 	}
 
+	private addPosition(position: Point) {
+		this.positions.push(position);
+	}
+
+	private movePositions() {
+		for (let i = this.getLength() - 1; i > 0; i--) {
+			this.setPosAtIndex(i, this.getPositionAtIndex(i - 1));
+		}
+	}
+
 	public goUp() {
+		this.movePositions();
 		this.setHeadYPos(this.getHeadYPos() - 1);
 	}
 
 	public goRight() {
+		this.movePositions();
 		this.setHeadXPos(this.getHeadXPos() + 1);
 	}
 
 	public goDown() {
+		this.movePositions();
 		this.setHeadYPos(this.getHeadYPos() + 1);
 	}
 
 	public goLeft() {
-		this.setHeadXPos(this.getHeadXPos() + 1);
+		this.movePositions();
+		this.setHeadXPos(this.getHeadXPos() - 1);
 	}
 
-	public grow() {
+	private grow() {
 		const newPoint = {
-			xPos: this.getHeadXPos(),
-			yPos: this.getHeadYPos(),
+			xPos: this.getXPosAtIndex(this.getLength() - 1),
+			yPos: this.getYPosAtIndex(this.getLength() - 1),
 		};
 
-		this.setPosAtIndex(this.getLength(), newPoint);
+		this.addPosition(newPoint);
 	}
 
 	public isTouchingWall(canvasWidth: number, canvasHeight: number) {
@@ -101,7 +120,7 @@ export default class Snake {
 		return false;
 	}
 
-	public move(canvasWidth: number, canvasHeight: number) {
+	public checkForCrossingBorder(canvasWidth: number, canvasHeight: number) {
 		for (let i = 0; i < this.getLength(); i++) {
 			if (this.getXPosAtIndex(i) < 0) {
 				this.setXPosAtIndex(i, this.getXPosAtIndex(i) + canvasWidth / 10);
