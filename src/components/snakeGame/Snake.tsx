@@ -120,10 +120,6 @@ export default function Snake(props: propsTypes) {
 			activeDot(ctx, snakeGame.getFoodPosition());
 			if (score === 10) {
 				//TODO: Link this to quiz
-				const x = document.getElementById('NextPage');
-				if (x) {
-					x.style.display = 'block';
-				}
 			}
 		}
 
@@ -191,6 +187,7 @@ export default function Snake(props: propsTypes) {
 					width="320"
 					height="320"
 					tabIndex={1}
+					style={wall ? { borderColor: '#FFFFFF' } : { borderColor: '#606060' }}
 					onKeyPress={(event) => changeDir(event.code)}
 				></canvas>
 			) : null}
