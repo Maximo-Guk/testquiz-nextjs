@@ -143,25 +143,25 @@ export default function Snake(props: propsTypes) {
 
 	function changeDir(code: string) {
 		switch (code) {
-			case 'KeyW':
+			case 'ArrowUp':
 				if (snakeGame.getSnakeDirection() !== 2) {
 					snakeGame.setSnakeDirection(0);
 				}
 				break;
 
-			case 'KeyD':
+			case 'ArrowRight':
 				if (snakeGame.getSnakeDirection() !== 3) {
 					snakeGame.setSnakeDirection(1);
 				}
 				break;
 
-			case 'KeyS':
+			case 'ArrowDown':
 				if (snakeGame.getSnakeDirection() !== 0) {
 					snakeGame.setSnakeDirection(2);
 				}
 				break;
 
-			case 'KeyA':
+			case 'ArrowLeft':
 				if (snakeGame.getSnakeDirection() !== 1) {
 					snakeGame.setSnakeDirection(3);
 				}
@@ -170,7 +170,11 @@ export default function Snake(props: propsTypes) {
 	}
 
 	return (
-		<div id="snakeGame">
+		<div
+			id="snakeGame"
+			onKeyDown={(event) => changeDir(event.code)}
+			tabIndex={1}
+		>
 			<header className="wrap mx-auto">
 				<h1 id="headerTitle" className="text-white">
 					Snake
@@ -186,9 +190,7 @@ export default function Snake(props: propsTypes) {
 					id="snake"
 					width="320"
 					height="320"
-					tabIndex={1}
 					style={wall ? { borderColor: '#FFFFFF' } : { borderColor: '#606060' }}
-					onKeyPress={(event) => changeDir(event.code)}
 				></canvas>
 			) : null}
 

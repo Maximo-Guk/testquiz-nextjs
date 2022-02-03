@@ -38,6 +38,7 @@ canvas:focus {
 #snakeGame {
 	font-family: 'VT323', 'Arial', 'Gill Sans', 'Gill Sans MT', 'Calibri',
 		'Trebuchet MS', 'sans-serif';
+	outline: none;
 }
 
 #headerTitle {
