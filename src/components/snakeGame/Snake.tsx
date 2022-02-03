@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import SnakeGame from '../../classes/snakeGame/SnakeGame';
 import Point from '../../types/Point';
 
-export default function Snake() {
+interface propsTypes {
+	setQuizBoxState: React.Dispatch<React.SetStateAction<boolean>>;
+	setSnakeGameState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function Snake(props: propsTypes) {
 	// Background Color state
 	const [backgroundColor, setBackgroundColor] = useState('black');
 

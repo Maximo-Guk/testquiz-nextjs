@@ -5,7 +5,12 @@ import AnswerButtons from './AnswerButtons';
 import AnswerForm from './AnswerForm';
 import QuizControls from './QuizControls';
 
-export default function QuizBox() {
+interface propsTypes {
+	setQuizBoxState: React.Dispatch<React.SetStateAction<boolean>>;
+	setSnakeGameState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function QuizBox(props: propsTypes) {
 	// AppContext
 	const { quiz, setQuiz } = useContext(QuizContext);
 
@@ -102,14 +107,18 @@ export default function QuizBox() {
 					case 'button':
 						setQuestionBoxState(true);
 						setButtonState(true);
+						break;
 					case 'form':
 						setQuestionBoxState(true);
 						setFormState(true);
+						break;
 					case 'snake':
-					// props.setQuizBox(false);
-					// props.setSnakeGame(true);
+						props.setQuizBoxState(false);
+						props.setSnakeGameState(true);
+						break;
 					case 'findCow':
 					case 'findI':
+						break;
 				}
 			} else if (quiz.getGameWin() === true) {
 				setQuestionBoxState(true);
