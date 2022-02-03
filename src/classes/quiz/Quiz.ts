@@ -1,5 +1,5 @@
-import { getQuizQuestion } from '../requests/BackendGetRequest';
-import { submitQuizResponse } from '../requests/BackendPostRequest';
+import { getQuizQuestion } from '../../requests/BackendGetRequest';
+import { submitQuizResponse } from '../../requests/BackendPostRequest';
 import User from './User';
 
 export interface Answer {
@@ -8,7 +8,7 @@ export interface Answer {
 }
 
 export default class Quiz {
-	private user: User;
+	private readonly user: User;
 	private roundNumber: number;
 	private question: string;
 	private type: string;

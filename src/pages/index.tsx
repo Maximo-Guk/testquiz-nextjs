@@ -1,8 +1,12 @@
 import Head from 'next/head';
-import React from 'react';
+import React, { useState } from 'react';
 import QuizBox from '../components/quiz/QuizBox';
+import Snake from '../components/snakeGame/Snake';
 import AppProvider from '../context/AppContext';
 export default function Quiz() {
+	const [quizBoxState, setQuizBoxState] = useState(true);
+	const [snakeGameState, setSnakeGameState] = useState(false);
+
 	return (
 		<>
 			<Head>
@@ -25,7 +29,17 @@ export default function Quiz() {
 				<link rel="preload" as="image" href="images/confetti.gif" />
 			</Head>
 			<AppProvider>
-				<QuizBox />
+				{quizBoxState ? (
+					<QuizBox
+						setQuizBoxState={setQuizBoxState}
+						setSnakeGameState={setSnakeGameState}
+					/>
+				) : snakeGameState ? (
+					<Snake
+						setQuizBoxState={setQuizBoxState}
+						setSnakeGameState={setSnakeGameState}
+					/>
+				) : null}
 			</AppProvider>
 		</>
 	);
