@@ -102,7 +102,7 @@ export default class SnakeGame {
 			this.canvasDimensions.height
 		);
 		this.setFood(newSnakeFood);
-		for (var i = 0; i < this.getSnakeLength(); i++) {
+		for (let i = 0; i < this.getSnakeLength(); i++) {
 			if (this.snake.isTouchingFood(this.getFoodPosition())) {
 				this.addFood();
 			}

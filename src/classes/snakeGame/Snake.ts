@@ -138,7 +138,7 @@ export default class Snake {
 	}
 
 	public isTouchingItSelf() {
-		for (var i = 1; i < this.getLength(); i++) {
+		for (let i = 1; i < this.getLength(); i++) {
 			if (
 				this.getHeadXPos() === this.getXPosAtIndex(i) &&
 				this.getHeadYPos() === this.getYPosAtIndex(i)
