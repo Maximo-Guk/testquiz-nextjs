@@ -40,6 +40,10 @@ canvas:focus {
 		'Trebuchet MS', 'sans-serif';
 }
 
+#snakeGame:focus {
+	outline: none;
+}
+
 #headerTitle {
 	display: inline-block;
 	width: 100px;
@@ -144,8 +148,4 @@ canvas:focus {
 #setting input:checked + label {
 	background-color: #fff;
 	color: #000000;
-}
-
-[tabIndex] {
-	outline: none;
 }
