@@ -166,6 +166,11 @@ export default function Snake(props: propsTypes) {
 					snakeGame.setSnakeDirection(3);
 				}
 				break;
+			case 'Space':
+				if (gameOverState) {
+					startGame();
+				}
+				break;
 		}
 	}
 
