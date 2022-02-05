@@ -126,6 +126,7 @@ export default function QuizBox(props: propsTypes) {
 						break;
 					case 'findCow':
 					case 'findI':
+					case 'evilCows':
 						break;
 				}
 			} else if (quiz.getGameWin() === true) {

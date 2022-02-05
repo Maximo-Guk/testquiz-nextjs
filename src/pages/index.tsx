@@ -1,11 +1,17 @@
-import Head from 'next/head';
 import React, { useState } from 'react';
+import Head from 'next/head';
+import AppProvider from '../context/AppContext';
 import QuizBox from '../components/quiz/QuizBox';
 import Snake from '../components/snakeGame/Snake';
-import AppProvider from '../context/AppContext';
+import FindCow from '../components/quiz/FindCow';
+import FindI from '../components/quiz/FindI';
+import EvilCows from '../components/quiz/EvilCows';
 export default function Quiz() {
 	const [quizBoxState, setQuizBoxState] = useState(true);
 	const [snakeGameState, setSnakeGameState] = useState(false);
+	const [findCowState, setFindCowState] = useState(false);
+	const [findIState, setFindIState] = useState(false);
+	const [evilCowsState, setEvilCowsState] = useState(false);
 
 	return (
 		<>
@@ -38,6 +44,21 @@ export default function Quiz() {
 					<Snake
 						setQuizBoxState={setQuizBoxState}
 						setSnakeGameState={setSnakeGameState}
+					/>
+				) : findCowState ? (
+					<FindCow
+						setQuizBoxState={setQuizBoxState}
+						setFindCowState={setFindCowState}
+					/>
+				) : findIState ? (
+					<FindI
+						setQuizBoxState={setQuizBoxState}
+						setFindIState={setFindIState}
+					/>
+				) : evilCowsState ? (
+					<EvilCows
+						setQuizBoxState={setQuizBoxState}
+						setEvilCowsState={setEvilCowsState}
 					/>
 				) : null}
 			</AppProvider>
