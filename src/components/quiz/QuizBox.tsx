@@ -11,7 +11,7 @@ interface propsTypes {
 }
 
 export default function QuizBox(props: propsTypes) {
-	// AppContext
+	// QuizContext
 	const { quiz, setQuiz } = useContext(QuizContext);
 
 	// Background colors
@@ -60,6 +60,14 @@ export default function QuizBox(props: propsTypes) {
 	// States for Controls
 	const [startButtonState, setStartButtonState] = useState(true);
 	const [nextButtonState, setNextButtonState] = useState(false);
+
+	// If already active user in state
+	useEffect(() => {
+		if (Object.keys(quiz).length !== 0) {
+			setStartButtonState(false);
+			nextQuestion(quiz);
+		}
+	}, [quiz]);
 
 	async function startQuiz() {
 		try {

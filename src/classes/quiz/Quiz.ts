@@ -95,6 +95,11 @@ export default class Quiz {
 	public async getQuizQuestion() {
 		const response = await getQuizQuestion(this.user.getUuid());
 
+		//TODO: Handle same question issue
+		// if (response.question === this.getQuestion()) {
+		// 	throw new Error('Please retry the submission');
+		// }
+
 		if (response.gameWin) {
 			this.setGameWin(true);
 			return;

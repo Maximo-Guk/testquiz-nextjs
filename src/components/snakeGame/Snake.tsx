@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SnakeGame from '../../classes/snakeGame/SnakeGame';
+import { QuizContext } from '../../context/AppContext';
 import Point from '../../types/Point';
 
 interface propsTypes {
@@ -8,6 +9,9 @@ interface propsTypes {
 }
 
 export default function Snake(props: propsTypes) {
+	// QuizContext
+	const { quiz } = useContext(QuizContext);
+
 	// Background Color state
 	const [backgroundColor, setBackgroundColor] = useState('black');
 
@@ -118,9 +122,6 @@ export default function Snake(props: propsTypes) {
 			setScore((prevScore) => prevScore + 1);
 			snakeGame.addFood();
 			activeDot(ctx, snakeGame.getFoodPosition());
-			if (score === 10) {
-				//TODO: Link this to quiz
-			}
 		}
 
 		ctx.beginPath();
@@ -172,6 +173,13 @@ export default function Snake(props: propsTypes) {
 				}
 				break;
 		}
+	}
+
+	async function finishedGame() {
+		await quiz.submitChoice('Score 10 points to proceed to the next level');
+		music.pause();
+		props.setQuizBoxState(true);
+		props.setSnakeGameState(false);
 	}
 
 	return (
@@ -262,6 +270,10 @@ export default function Snake(props: propsTypes) {
 					<a onClick={() => showSettings()}>settings</a>
 				</div>
 			) : null}
+
+			<div className="mx-auto text-center" style={{ width: 340 }}>
+				<button onClick={() => finishedGame()}>Continue</button>
+			</div>
 		</div>
 	);
 }
