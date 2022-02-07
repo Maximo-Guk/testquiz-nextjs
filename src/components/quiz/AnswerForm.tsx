@@ -19,8 +19,15 @@ export default function AnswerForm(props: propsTypes) {
 				<div className="col">
 					<form onSubmit={(event) => props.handleSubmit(event)}>
 						<div className="row form-group">
+							<label
+								className="visually-hidden"
+								htmlFor="inlineFormInputAnswer"
+							>
+								Answer
+							</label>
 							<input
 								type="text"
+								id="inlineFormInputAnswer"
 								className="form-control rounded"
 								placeholder="Answer"
 								value={props.value}
