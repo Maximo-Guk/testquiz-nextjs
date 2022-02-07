@@ -143,7 +143,8 @@ export default function QuizBox(props: propsTypes) {
 			} else {
 				setQuestionBoxState(true);
 				setQuestion('You WIN!');
-				document.body.classList.add('correct');
+				setBackgroundColor(successColor);
+				setBackgroundImage(successImage);
 				console.log('You Won!');
 			}
 		} catch (error) {
