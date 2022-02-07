@@ -271,9 +271,11 @@ export default function Snake(props: propsTypes) {
 				</div>
 			) : null}
 
-			<div className="mx-auto text-center" style={{ width: 340 }}>
-				<button onClick={() => finishedGame()}>Continue</button>
-			</div>
+			{score >= 10 ? (
+				<div className="mx-auto text-center" style={{ width: 340 }}>
+					<button onClick={() => finishedGame()}>Continue</button>
+				</div>
+			) : null}
 		</div>
 	);
 }
