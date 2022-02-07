@@ -39,6 +39,9 @@ export default function Quiz() {
 					<QuizBox
 						setQuizBoxState={setQuizBoxState}
 						setSnakeGameState={setSnakeGameState}
+						setFindCowState={setFindCowState}
+						setFindIState={setFindIState}
+						setEvilCowsState={setEvilCowsState}
 					/>
 				) : snakeGameState ? (
 					<Snake

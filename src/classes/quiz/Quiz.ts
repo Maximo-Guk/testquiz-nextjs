@@ -9,6 +9,7 @@ export interface Answer {
 
 export default class Quiz {
 	private readonly user: User;
+	private choice: string;
 	private roundNumber: number;
 	private question: string;
 	private type: string;
@@ -17,6 +18,7 @@ export default class Quiz {
 
 	private constructor(
 		user: User,
+		choice: string,
 		roundNumber: number,
 		question: string,
 		type: string,
@@ -24,6 +26,7 @@ export default class Quiz {
 		gameWin: boolean
 	) {
 		this.user = user;
+		this.choice = choice;
 		this.roundNumber = roundNumber;
 		this.question = question;
 		this.type = type;
@@ -31,6 +34,9 @@ export default class Quiz {
 		this.gameWin = gameWin;
 	}
 
+	public getChoice() {
+		return this.choice;
+	}
 	public getRoundNumber() {
 		return this.roundNumber;
 	}
@@ -45,6 +51,9 @@ export default class Quiz {
 	}
 	public getGameWin() {
 		return this.gameWin;
+	}
+	private setChoice(choice: string) {
+		this.choice = choice;
 	}
 	private incrementRoundNumber() {
 		this.roundNumber++;
@@ -65,12 +74,14 @@ export default class Quiz {
 	public static async newQuiz() {
 		const user = await User.newUser();
 		const response = await getQuizQuestion(user.getUuid());
+		const choice = '';
 		const roundNumber = 0;
 		const gameWin = false;
 		const answers = Quiz.toAnswers(response.answers);
 
 		return new Quiz(
 			user,
+			choice,
 			roundNumber,
 			response.question,
 			response.type,
@@ -86,8 +97,22 @@ export default class Quiz {
 	}
 
 	public async submitChoice(choice: string) {
-		const response = await submitQuizResponse(this.user.getUuid(), choice);
+		this.setChoice(choice);
+
+		const response = await submitQuizResponse(
+			this.user.getUuid(),
+			this.getChoice()
+		);
 		this.incrementRoundNumber();
+
+		return response;
+	}
+
+	public async resubmitChoice() {
+		const response = await submitQuizResponse(
+			this.user.getUuid(),
+			this.getChoice()
+		);
 
 		return response;
 	}
@@ -95,10 +120,9 @@ export default class Quiz {
 	public async getQuizQuestion() {
 		const response = await getQuizQuestion(this.user.getUuid());
 
-		//TODO: Handle same question issue
-		// if (response.question === this.getQuestion()) {
-		// 	throw new Error('Please retry the submission');
-		// }
+		if (response.question === this.getQuestion()) {
+			throw new Error('Please retry the submission');
+		}
 
 		if (response.gameWin) {
 			this.setGameWin(true);

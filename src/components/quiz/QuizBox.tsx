@@ -8,6 +8,9 @@ import QuizControls from './QuizControls';
 interface propsTypes {
 	setQuizBoxState: React.Dispatch<React.SetStateAction<boolean>>;
 	setSnakeGameState: React.Dispatch<React.SetStateAction<boolean>>;
+	setFindCowState: React.Dispatch<React.SetStateAction<boolean>>;
+	setFindIState: React.Dispatch<React.SetStateAction<boolean>>;
+	setEvilCowsState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function QuizBox(props: propsTypes) {
@@ -61,6 +64,9 @@ export default function QuizBox(props: propsTypes) {
 	const [startButtonState, setStartButtonState] = useState(true);
 	const [nextButtonState, setNextButtonState] = useState(false);
 
+	// Display user facing error messages
+	const [errorMessage, setErrorMessage] = useState('');
+
 	// If already active user in state
 	useEffect(() => {
 		if (Object.keys(quiz).length !== 0) {
@@ -71,14 +77,11 @@ export default function QuizBox(props: propsTypes) {
 
 	async function startQuiz() {
 		try {
-			const newQuiz = await Quiz.newQuiz();
-			setQuiz(newQuiz);
-
+			setQuiz(await Quiz.newQuiz());
 			setStartButtonState(false);
-			nextQuestion(newQuiz);
 		} catch (error) {
 			if (error instanceof TypeError && error.message === 'Failed to fetch') {
-				console.log(error);
+				setErrorMessage(error.message);
 				return;
 			}
 			throw error;
@@ -102,6 +105,7 @@ export default function QuizBox(props: propsTypes) {
 
 	async function nextQuestion(quiz: Quiz) {
 		try {
+			setErrorMessage('');
 			if (quiz.getRoundNumber() !== 0) {
 				await quiz.getQuizQuestion();
 				resetQuiz();
@@ -109,9 +113,8 @@ export default function QuizBox(props: propsTypes) {
 			setQuestion(quiz.getQuestion());
 			setAnswers(quiz.getAnswers());
 			setNextButtonState(false);
-			if (quiz.getType() !== undefined) {
-				let questionType = quiz.getType();
-				switch (questionType) {
+			if (quiz.getGameWin() !== true) {
+				switch (quiz.getType()) {
 					case 'button':
 						setQuestionBoxState(true);
 						setButtonState(true);
@@ -125,11 +128,19 @@ export default function QuizBox(props: propsTypes) {
 						props.setSnakeGameState(true);
 						break;
 					case 'findCow':
+						props.setQuizBoxState(false);
+						props.setFindCowState(true);
+						break;
 					case 'findI':
+						props.setQuizBoxState(false);
+						props.setFindIState(true);
+						break;
 					case 'evilCows':
+						props.setQuizBoxState(false);
+						props.setEvilCowsState(true);
 						break;
 				}
-			} else if (quiz.getGameWin() === true) {
+			} else {
 				setQuestionBoxState(true);
 				setQuestion('You WIN!');
 				document.body.classList.add('correct');
@@ -137,7 +148,15 @@ export default function QuizBox(props: propsTypes) {
 			}
 		} catch (error) {
 			if (error instanceof TypeError && error.message === 'Failed to fetch') {
-				console.log(error);
+				setErrorMessage(error.message);
+				return;
+			} else if (
+				error instanceof Error &&
+				error.message === 'Please retry the submission'
+			) {
+				setErrorMessage(error.message);
+				await quiz.resubmitChoice();
+				setNextButtonState(true);
 				return;
 			}
 			restartQuiz();
@@ -156,37 +175,51 @@ export default function QuizBox(props: propsTypes) {
 			| React.FormEvent<HTMLFormElement>
 	) {
 		event.preventDefault();
-		if (!answers[0].status) {
+		if (formInput !== '' && !answers[0].status) {
 			selectAnswer(formInput);
 		}
 	}
 	async function selectAnswer(choice: string) {
-		const response = await quiz.submitChoice(choice);
-		if (response.answer === true) {
-			const updatedAnswers = answers.map((question) => {
-				if (question.answer === choice || answers.length === 1) {
-					return { ...question, status: 'correct' };
-				} else {
+		try {
+			const response = await quiz.submitChoice(choice);
+			if (response.answer === true) {
+				const updatedAnswers = answers.map((question) => {
+					if (question.answer === quiz.getChoice() || answers.length === 1) {
+						return { ...question, status: 'correct' };
+					} else {
+						return { ...question, status: 'wrong' };
+					}
+				});
+				setAnswers(updatedAnswers);
+				setBackgroundColor(successColor);
+				setBackgroundImage(successImage);
+				victorySound.play();
+			} else {
+				const updatedAnswers = answers.map((question) => {
 					return { ...question, status: 'wrong' };
-				}
-			});
-			setAnswers(updatedAnswers);
-			setBackgroundColor(successColor);
-			setBackgroundImage(successImage);
-			victorySound.play();
-		} else {
-			const updatedAnswers = answers.map((question) => {
-				return { ...question, status: 'wrong' };
-			});
-			setQuestion('You lost!');
-			setAnswers(updatedAnswers);
-			setBackgroundColor(failureColor);
+				});
+				setQuestion('You lost!');
+				setAnswers(updatedAnswers);
+				setBackgroundColor(failureColor);
+			}
+			setNextButtonState(true);
+		} catch (error) {
+			if (error instanceof TypeError && error.message === 'Failed to fetch') {
+				setErrorMessage(error.message);
+				return;
+			}
+			throw error;
 		}
-		setNextButtonState(true);
 	}
 	return (
 		<div id="quiz-box" className="rounded mx-auto p-2">
 			<div className="container-fluid">
+				{errorMessage ? (
+					<div className="alert alert-danger" role="alert">
+						{errorMessage}
+					</div>
+				) : null}
+
 				{questionBoxState ? (
 					<div id="question-box" className="row">
 						<div id="question" className="col mb-4">
