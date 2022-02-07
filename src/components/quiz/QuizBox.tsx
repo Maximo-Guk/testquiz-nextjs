@@ -110,10 +110,10 @@ export default function QuizBox(props: propsTypes) {
 				await quiz.getQuizQuestion();
 				resetQuiz();
 			}
-			setQuestion(quiz.getQuestion());
-			setAnswers(quiz.getAnswers());
-			setNextButtonState(false);
 			if (quiz.getGameWin() !== true) {
+				setQuestion(quiz.getQuestion());
+				setAnswers(quiz.getAnswers());
+				setNextButtonState(false);
 				switch (quiz.getType()) {
 					case 'button':
 						setQuestionBoxState(true);
@@ -141,8 +141,9 @@ export default function QuizBox(props: propsTypes) {
 						break;
 				}
 			} else {
-				setQuestionBoxState(true);
 				setQuestion('You WIN!');
+				setNextButtonState(false);
+				setQuestionBoxState(true);
 				setBackgroundColor(successColor);
 				setBackgroundImage(successImage);
 				console.log('You Won!');
