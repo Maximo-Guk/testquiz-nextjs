@@ -12,7 +12,7 @@ interface QuizProviderTypes {
 export const QuizContext = createContext({} as QuizContextTypes);
 
 // Quiz provider wrapper contains logic for user class and quiz class
-export default function AuthProvider({ children }: QuizProviderTypes) {
+export default function QuizProvider({ children }: QuizProviderTypes) {
 	const [quiz, setQuiz] = useState({} as Quiz);
 
 	return (

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import SnakeGame from '../../classes/snakeGame/SnakeGame';
-import { QuizContext } from '../../context/AppContext';
+import { QuizContext } from '../../context/QuizContext';
 import Point from '../../types/Point';
 
 interface propsTypes {
@@ -39,8 +39,17 @@ export default function Snake(props: propsTypes) {
 
 	// snakeGame States
 	const [snakeGame, setSnakeGame] = useState({} as SnakeGame);
+	const [victory, setVictory] = useState(false);
 	const [score, setScore] = useState(0);
 	const [wall, setWall] = useState(true);
+
+	// When score changes
+	useEffect(() => {
+		// Set victory state to true if score is bigger than 10
+		if (score >= 10 && !victory) {
+			setVictory(true);
+		}
+	}, [score]);
 
 	// When game state changes
 	useEffect(() => {
@@ -271,7 +280,7 @@ export default function Snake(props: propsTypes) {
 				</div>
 			) : null}
 
-			{score >= 10 ? (
+			{victory ? (
 				<div className="mx-auto text-center" style={{ width: 340 }}>
 					<button onClick={() => finishedGame()}>Continue</button>
 				</div>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { QuizContext } from '../../context/AppContext';
+import { QuizContext } from '../../context/QuizContext';
 
 interface propsTypes {
 	setQuizBoxState: React.Dispatch<React.SetStateAction<boolean>>;

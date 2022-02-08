@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { QuizContext } from '../../context/AppContext';
+import { QuizContext } from '../../context/QuizContext';
 import Quiz from '../../classes/quiz/Quiz';
 
 interface propsTypes {

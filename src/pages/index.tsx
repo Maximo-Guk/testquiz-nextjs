@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import AppProvider from '../context/AppContext';
+import QuizProvider from '../context/QuizContext';
 import QuizBox from '../components/quiz/QuizBox';
 import Snake from '../components/snakeGame/Snake';
 import FindCow from '../components/quiz/FindCow';
@@ -34,7 +34,7 @@ export default function Quiz() {
 				<link rel="stylesheet" href="css/snake.css" />
 				<link rel="preload" as="image" href="images/confetti.gif" />
 			</Head>
-			<AppProvider>
+			<QuizProvider>
 				{quizBoxState ? (
 					<QuizBox
 						setQuizBoxState={setQuizBoxState}
@@ -64,7 +64,7 @@ export default function Quiz() {
 						setEvilCowsState={setEvilCowsState}
 					/>
 				) : null}
-			</AppProvider>
+			</QuizProvider>
 		</>
 	);
 }
